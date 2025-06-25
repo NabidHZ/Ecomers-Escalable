@@ -16,12 +16,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter; //este filtro se encarga de validar el JWT en cada solicitud
 
     public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
-    }
+    }// Este filtro se inyecta en el constructor de la clase SecurityConfig
 
+
+    // Permite acceso público a /api/auth/**
+    // Requiere autenticación para otras rutas
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

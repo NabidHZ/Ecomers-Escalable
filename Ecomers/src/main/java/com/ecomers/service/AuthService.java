@@ -16,21 +16,13 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /*public void registerUser(RegisterRequest request) {
+    public void registerUser(RegisterRequest request) { // Este metodo maneja el registro de usuarios, es invicado por AuthController
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(User.Role.USUARIO);
         userRepository.save(user);
-    }*/
+    }//Este usuario es enviado a Repository para ser guarada en la Base de datos
 
-    public void registerUser(RegisterRequest request) {
-        System.out.println("Registrando usuario: " + request.getUsername());
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(User.Role.USUARIO);
-        userRepository.save(user);
-        System.out.println("Usuario registrado en la base de datos.");
-    }
+
 }
