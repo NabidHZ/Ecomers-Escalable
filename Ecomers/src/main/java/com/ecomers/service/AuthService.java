@@ -16,11 +16,21 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(RegisterRequest request) {
+    /*public void registerUser(RegisterRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole("USER");
+        user.setRole(User.Role.USUARIO);
         userRepository.save(user);
+    }*/
+
+    public void registerUser(RegisterRequest request) {
+        System.out.println("Registrando usuario: " + request.getUsername());
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(User.Role.USUARIO);
+        userRepository.save(user);
+        System.out.println("Usuario registrado en la base de datos.");
     }
 }
