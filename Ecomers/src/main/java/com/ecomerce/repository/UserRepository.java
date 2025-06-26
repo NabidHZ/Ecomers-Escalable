@@ -1,6 +1,6 @@
-package com.ecomers.repository;
+package com.ecomerce.repository;
 
-import com.ecomers.model.User;
+import com.ecomerce.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

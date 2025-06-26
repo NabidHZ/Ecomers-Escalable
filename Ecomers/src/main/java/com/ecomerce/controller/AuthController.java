@@ -1,7 +1,7 @@
-package com.ecomers.controller;
+package com.ecomerce.controller;
 
-import com.ecomers.dto.RegisterRequest;
-import com.ecomers.service.AuthService;
+import com.ecomerce.dto.RegisterRequest;
+import com.ecomerce.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register") // This endpoint handles user registration
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {  // Validates the request body and maps it to RegisterRequest
-        authService.registerUser(request);
-        return ResponseEntity.ok("User registered successfully");
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
+        String token = authService.registerUser(request);
+        return ResponseEntity.ok(token);
     }
 }

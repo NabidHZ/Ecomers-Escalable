@@ -1,4 +1,4 @@
-package com.ecomers.dto;
+package com.ecomerce.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

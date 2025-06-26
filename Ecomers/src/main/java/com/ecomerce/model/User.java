@@ -1,4 +1,4 @@
-package com.ecomers.model;
+package com.ecomerce.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

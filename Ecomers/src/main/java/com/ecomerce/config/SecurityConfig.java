@@ -1,6 +1,6 @@
-package com.ecomers.config;
+package com.ecomerce.config;
 
-import com.ecomers.security.JwtFilter;
+import com.ecomerce.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
