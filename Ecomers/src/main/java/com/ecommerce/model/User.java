@@ -2,10 +2,10 @@ package com.ecommerce.model;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity // Anotación para indicar que esta clase es una entidad JPA
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID único para cada usuario
     private Long id;
 
     @Column(unique = true)

@@ -9,8 +9,10 @@ import java.util.Date;
 import java.security.Key;
 
 @Component
-public class JwtUtil {
-    @Value("${jwt.secret}")
+public class JwtUtil { //Esta clase genera y valida los tokens JWT.
+
+
+    @Value("${jwt.secret}") // Clave secreta para firmar los tokens, debe ser configurada en application.properties
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
@@ -20,28 +22,28 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email) { // Este método genera un token JWT para un usuario dado su email.
         return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setSubject(email) // El sujeto del token es el email del usuario
+                .setIssuedAt(new Date()) // Fecha de emisión del token
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))  // Fecha de expiración del token, se calcula sumando el tiempo de expiración configurado
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Firma el token con la clave secreta y el algoritmo HS256
                 .compact();
     }
 
-    public String getEmailFromToken(String token) {
+    public String getEmailFromToken(String token) {  // Este método extrae el email del sujeto del token JWT.
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .setSigningKey(getSigningKey())  // Configura la clave de firma para validar el token
+                .build()  // Construye el parser de JWT
+                .parseClaimsJws(token)  // Analiza el token y obtiene los claims
+                .getBody() // Obtiene el cuerpo de los claims del token
+                .getSubject(); // Retorna el sujeto del token, que es el email del usuario
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) { // Este método valida el token JWT.Esto incluye comprobar que el token no esté alterado y que no haya caducado.
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+                    .setSigningKey(getSigningKey()) //
                     .build()
                     .parseClaimsJws(token);
             return true;

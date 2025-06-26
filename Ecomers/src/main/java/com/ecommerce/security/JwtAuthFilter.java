@@ -24,32 +24,39 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+    /**
+     * Este filtro se encarga de interceptar las solicitudes HTTP para verificar la validez del token JWT.
+     * Si el token es válido, se establece la autenticación en el contexto de seguridad.
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) // Método que se ejecuta para filtrar las solicitudes HTTP
+            throws ServletException, IOException {
+
+
+        String authHeader = request.getHeader("Authorization"); // Obtiene el encabezado de autorización de la solicitud HTTP
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) { // Verifica si el encabezado de autorización está presente y comienza con "Bearer "
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7);
+        String token = authHeader.substring(7); // Extrae el token JWT del encabezado de autorización, eliminando el prefijo "Bearer "
 
-        try {
+        try { // Intenta validar el token JWT y extraer el email del usuario
             String email = jwtUtil.getEmailFromToken(token);
 
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) { // Verifica si el email no es nulo y si no hay una autenticación previa en el contexto de seguridad
                 var user = userRepository.findByEmail(email);
 
-                if (user != null && jwtUtil.validateToken(token)) {
+                if (user != null && jwtUtil.validateToken(token)) { // Busca al usuario en la base de datos por su email y valida el token JWT
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             user, null, null);
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // Crea un objeto de autenticación con los detalles de la solicitud
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-        } catch (JwtException e) {
+        } catch (JwtException e) { // Captura cualquier excepción relacionada con el token JWT
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
             return;
         }
