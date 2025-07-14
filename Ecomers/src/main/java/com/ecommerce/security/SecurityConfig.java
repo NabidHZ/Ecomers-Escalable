@@ -25,10 +25,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/products").permitAll() // Acceso público al GET de productos
+                        .requestMatchers("/api/products/**").authenticated() // Requiere autenticación para otras operaciones
                         .anyRequest().authenticated()
-
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);;
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
